@@ -49,12 +49,8 @@ private:
 	bool mTimingDrawFlag;
 	// タイミングゲージのクリック出来るかのフラグ管理
 	bool mTimingFlag;
-	// Perfectのフラグ管理
-	bool mPerfectFlag;
-	// Goodのフラグ管理
-	bool mGoodFlag;
-	// Badのフラグ管理
-	bool mBadFlag;
+	// Reactionのフラグ管理
+	bool mReactionFlag;
 
 	//  ゲージ
 	// ゲージの座標X
@@ -114,7 +110,7 @@ private:
 	float mCountPack;
 
 	//  CSV
-// CSVファイルを格納
+    // CSVファイルを格納
 	char mCsv[24] = "data/CSV/TestTiming.csv";
 	// ファイルのポインタ
 	FILE* mFilePointer;
@@ -166,5 +162,8 @@ private:
 	class Sound* mGoodSound;
 	// バッドの時になる効果音
 	class Sound* mBadSound;
+
+	int i = 0;
+
 };
 

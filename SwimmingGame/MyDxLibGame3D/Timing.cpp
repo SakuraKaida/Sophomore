@@ -3,6 +3,7 @@
 #include "Input.h"
 #include "Sound.h"
 #include "Score.h"
+#include <time.h>
 
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
@@ -10,9 +11,7 @@
 Timing::Timing()
 	: mTimingDrawFlag(false)
 	, mTimingFlag(false)
-	, mPerfectFlag(false)
-	, mGoodFlag(false)
-	, mBadFlag(false)
+	, mReactionFlag(true)
 	, mScoreFlag(false)
 	, mGageX(50)
 	, mGageY(350)
@@ -64,8 +63,10 @@ Timing::Timing()
 	mScorePtr = new Score();
 
 
-	fopen_s(&mFilePointer, "data/csv/TestTiming.csv","r");
+	fopen_s(&mFilePointer, "data/csv/TestTiming1.csv","r");
 	CSVRead();
+
+
 }
 
 
@@ -91,79 +92,92 @@ Timing::~Timing()
 //-----------------------------------------------------------------------------
 void Timing::Update()
 {
-	// カウント
-	mCount++;
-	// 
-	mCountPack = mCount / 1000.0f;
-	for (int i = 0; i < 31; i++)
-	{
-		// カウントが格納されている時間になったら
-		if (mCountPack == mRhythm[i])
-		{
-			mTimingDrawFlag = true;
-		}
 
+	// カウント
+	mCount+= 1;
+	// 
+	mCountPack = mCount / 1000;
+
+	// 
+	if (mCountPack > mRhythm[i])
+	{
+		// タイミングゲージ描画フラグを「真」にする
+		mTimingDrawFlag = true;
 	}
-	
+
+
 	UpdateKey();
 	// ゲージが描画されるフラグが立ったら
 	if (mTimingDrawFlag)
 	{
-		// スペースキーを押したらタイミングフラグが「真」となる
+		// スペースキーを押したらタイミングフラグ、スコアフラグが「真」となる
 		if (Key[KEY_INPUT_SPACE] == 1)
 		{
 			mTimingFlag = true;
 			mScoreFlag = true;
 		}
-		// ボタンを押されタイミングフラグが「真」となったら
-		if (mTimingFlag)
+		if (!mReactionFlag)
 		{
 			// カウントをし続ける
 			mReactionCount++;
-			// バッドの条件
-			if (mRadius - mGageRadius > mBadRadius)
+		}
+		if (mReactionFlag)
+		{
+			// ボタンを押されタイミングフラグが「真」となったら
+			if (mTimingFlag)
 			{
+				// バッドの条件
+				if (mRadius - mGageRadius > mBadRadius)
+				{
+					// エフェクト画像をバッドエフェクトにする
+					mEffectImg = mBadEffectImg;
+					// エフェクトフラグを「真」にする
+					mEffectFlag = true;
+					// バッドの効果音を流す
+					mBadSound->PlaySE();
+					// 他にリアクションを判定しない
+					mReactionFlag = false;
+				}
+				// グッドの条件
+				if (mRadius - mGageRadius >= mPerfectRadius && mRadius - mGageRadius <= mBadRadius)
+				{
+					// エフェクト画像をグッドエフェクトにする
+					mEffectImg = mGoodEffectImg;
+					// エフェクトフラグを「真」にする
+					mEffectFlag = true;
+					// グッドの効果音を流す
+					mGoodSound->PlaySE();
+					// 他にリアクションを判定しない
+					mReactionFlag = false;
+				}
+				// パーフェクトの条件
+				if (mRadius - mGageRadius < mPerfectRadius)
+				{
+					// エフェクト画像をパーフェクトエフェクトにする
+					mEffectImg = mPerfectEffectImg;
+					// エフェクトフラグを「真」にする
+					mEffectFlag = true;
+					// パーフェクトの効果音を流す
+					mPerfectSound->PlaySE();
+
+					// 他にリアクションを判定しない
+					mReactionFlag = false;
+				}
+			}
+			// タイミングフラグが「偽」であり、ゲージの半径が０になったら
+			else if (!mTimingFlag && mRadius == 0)
+			{
+				// エフェクト画像をバッドエフェクトにする
 				mEffectImg = mBadEffectImg;
+				// エフェクトフラグを「真」にする
 				mEffectFlag = true;
 				// バッドの効果音を流す
 				mBadSound->PlaySE();
-				// バッドフラグを「真」にする
-				mBadFlag = true;
-			}
-			// グッドの条件
-			if (mRadius - mGageRadius >= mPerfectRadius && mRadius - mGageRadius <= mBadRadius)
-			{
-				mEffectImg = mGoodEffectImg;
-				mEffectFlag = true;
-				// グッドの効果音を流す
-				mGoodSound->PlaySE();
-				// グッドフラグを「真」にする
-				mGoodFlag = true;
-			}
-			// パーフェクトの条件
-			if (mRadius - mGageRadius < mPerfectRadius)
-			{
-				mEffectImg = mPerfectEffectImg;
-				mEffectFlag = true;
-				// パーフェクトの効果音を流す
-				mPerfectSound->PlaySE();
-				// パーフェクトフラグを「真」にする
-				mPerfectFlag = true;
+				// 他にリアクションを判定しない
+				mReactionFlag = false;
 			}
 		}
-		// タイミングフラグが「偽」であり、ゲージの半径が０になったら
-		if (!mTimingFlag && mRadius == 0)
-		{
-			// カウントをし続ける
-			mReactionCount++;
-			mEffectImg = mBadEffectImg;
-			mEffectFlag = true;
-			// バッドの効果音を流す
-			mBadSound->PlaySE();
-			// バッドフラグを「真」にする
-			mBadFlag = true;
-		}
-
+		
 		// リアクションカウントが最大値ではないとき
 		if (!(mReactionCount < mReactionCountMax))
 		{
@@ -179,10 +193,13 @@ void Timing::Update()
 		// リアクションカウントが最大値を超えたら
 		if (mReactionCount >= mReactionCountMax)
 		{
-			// それ以外の場合はタイミングフラグを「偽」とする
+			// タイミングフラグを「偽」とする
 			mTimingFlag = false;
 			// タイミングゲージを描画しない
 			mTimingDrawFlag = false;
+			i++;
+			// リアクションを判定できるようにする
+			mReactionFlag = true;
 		}
 		// エフェクトのフラグが「真」のとき
 		if (mEffectFlag)
@@ -203,12 +220,8 @@ void Timing::Update()
 
 		// フラグを「偽」にする
 		mTimingFlag = false;
-		mBadFlag = false;
-		mGoodFlag = false;
-		mPerfectFlag = false;
 		mEffectFlag = false;
 	}
-
 }
 
 
@@ -217,56 +230,32 @@ void Timing::Update()
 //-----------------------------------------------------------------------------
 void Timing::Draw()
 {
-	// リアクション判定のフレームの描画
-	DrawGraph(mFreamX, mFreamY, mFreamImg, TRUE);
+	// パーフェクト判定の位置となるゲージの描画
+	DrawCircle(mGageCX, mGageCY, mGageRadius, mWhite, TRUE);
 
 	// タイミングゲージを描画するフラグが「真」となったら
 	if (mTimingDrawFlag)
 	{
-		// パーフェクト判定の位置となるゲージの描画
-		DrawCircle(mGageCX, mGageCY, mGageRadius, mWhite, TRUE);
-
-		// ボタンが押されていないとき
 		if (!mTimingFlag)
 		{
 			// 半径が０になるまで収縮
 			if (mRadius > 0)
 			{
 				// 収縮するゲージの描画
-				DrawCircle(mGageCX, mGageCY, mRadius--, mBrack, FALSE);
+				DrawCircle(mGageCX, mGageCY, mRadius--, mBrack, FALSE, 2);
 			}
 		}
-
-		// カウントが最大値になるまで描画
-		if (mReactionCount < mReactionCountMax)
-		{
-			// バッドフラグが立ったら描画する
-			if (mBadFlag)
-			{
-				DrawGraph(mReactionX, mReactionY, mBadImg, TRUE);
-			}
-			// グッドフラグが立ったら描画する
-			if (mGoodFlag)
-			{
-				DrawGraph(mReactionX, mReactionY, mGoodImg, TRUE);
-			}
-			// パーフェクトフラグが立ったら描画する
-			if (mPerfectFlag)
-			{
-				DrawGraph(mReactionX, mReactionY, mPerfectImg, TRUE);
-			}
-		}
-		// エフェクトのフラグが「真」のとき
-		if (mEffectFlag)
-		{
-			DrawRotaGraph(mGageCX, mGageCY, mEffectScale, mEffectAngle, mEffectImg, true, false, false);
-		}
-		// スコアを描画
-		mScorePtr->Draw();
 	}
-
+	
+	// エフェクトのフラグが「真」のとき
+	if (mEffectFlag)
+	{
+		DrawRotaGraph(mGageCX, mGageCY, mEffectScale, mEffectAngle, mEffectImg, true, false, false);
+	}
 	// 再生されている音楽の時間の確認（デバッグ用）
 	DrawFormatString(0, 30, mWhite, "Time:%f", mCountPack);
+	// スコアを描画
+	mScorePtr->Draw();
 }
 
 
