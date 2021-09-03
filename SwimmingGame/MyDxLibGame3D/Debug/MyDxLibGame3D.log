@@ -1,3 +1,3 @@
 ﻿  Timing.cpp
-C:\Users\student\Desktop\Sophomore\SwimmingGame\MyDxLibGame3D\Timing.cpp(298,16): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\Sophomore\SwimmingGame\MyDxLibGame3D\Timing.cpp(294,16): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
   MyDxLibGame3D.vcxproj -> C:\Users\student\Desktop\Sophomore\SwimmingGame\Debug\MyDxLibGame3D.exe

@@ -119,11 +119,11 @@ private:
 
 	float mNum;
 	char mBuffer[10];
-	float mCell[1][31];
+	float mCell[1][19];
 	int mColumnNum;
 	int mRawNum;
 	bool mEofFlag;
-	float mRhythm[31];
+	float mRhythm[19];
 
 	//  スコア
 	// Score処理フラグ

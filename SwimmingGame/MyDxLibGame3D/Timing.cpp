@@ -62,11 +62,8 @@ Timing::Timing()
 
 	mScorePtr = new Score();
 
-
-	fopen_s(&mFilePointer, "data/csv/TestTiming1.csv","r");
+	fopen_s(&mFilePointer, "data/csv/bgm_1.csv","r");
 	CSVRead();
-
-
 }
 
 
@@ -92,14 +89,13 @@ Timing::~Timing()
 //-----------------------------------------------------------------------------
 void Timing::Update()
 {
-
 	// カウント
-	mCount+= 1;
+	mCount++;
 	// 
 	mCountPack = mCount / 1000;
 
 	// 
-	if (mCountPack > mRhythm[i])
+	if (mCountPack == mRhythm[i])
 	{
 		// タイミングゲージ描画フラグを「真」にする
 		mTimingDrawFlag = true;
@@ -159,7 +155,6 @@ void Timing::Update()
 					mEffectFlag = true;
 					// パーフェクトの効果音を流す
 					mPerfectSound->PlaySE();
-
 					// 他にリアクションを判定しない
 					mReactionFlag = false;
 				}
@@ -191,12 +186,13 @@ void Timing::Update()
 			}
 		}
 		// リアクションカウントが最大値を超えたら
-		if (mReactionCount >= mReactionCountMax)
+		if (mReactionCount == mReactionCountMax)
 		{
 			// タイミングフラグを「偽」とする
 			mTimingFlag = false;
 			// タイミングゲージを描画しない
 			mTimingDrawFlag = false;
+			// 次のゲージ用
 			i++;
 			// リアクションを判定できるようにする
 			mReactionFlag = true;
