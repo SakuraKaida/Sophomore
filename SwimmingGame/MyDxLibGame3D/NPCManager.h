@@ -4,7 +4,7 @@
 #include<DxLib.h>
 
 //NPCの数
-const int NPC_NUM = 4;
+const int NPC_NUM = 8;
 
 /// <summary>
 /// クラスの定義
@@ -19,6 +19,10 @@ class NPCManager final
 public:
 	NPCManager();    //コンストラクタ
 	~NPCManager();    //デストラクタ
+
+	void CreatNPC();    //NPCの生成
+
+	void DestroyNPC();    //NPCの削除
 
 	void Update();     //更新関数
 

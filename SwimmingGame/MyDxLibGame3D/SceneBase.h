@@ -1,6 +1,8 @@
 #pragma once
 #include "DxLib.h"
 
+class Score;
+
 /// <summary>
 /// シーンの基底クラス
 /// </summary>
@@ -31,6 +33,8 @@ public:
 	{
 		// タイトル
 		title,
+		// チュートリアル
+		tutorial,
 		// ゲームプレイ
 		play,
 		// アーティスティックスイミング時
@@ -84,6 +88,9 @@ public: // ゲッター、セッター
 	/// </summary>
 	/// <param name="_isScene">現在のシーン</param>
 	void SetScene(int _isScene) { mIsScene = _isScene; }
+
+	// スコアクラスの変数を持つ
+	Score* mScore = nullptr;
 
 	// 値を渡す
 	int GetStartPoint() { return mStart; }

@@ -1,7 +1,8 @@
 #include "Title.h"
-#include "Play.h"
+#include "Tutorial.h"
 #include "Camera.h"
 #include "Sound.h"
+#include "Input.h"
 
 /// <summary>
 /// コンストラクタ
@@ -28,8 +29,8 @@ Title::Title()
 	, ANGLE(0.0f)
 	, FISH_NUM(2)
 	, TEXT_NUM(3)
-	, BACK_EXTEND_X(2000)
-	, BACK_EXTEND_Y(1000)
+	, BACK_EXTEND_X(570)
+	, BACK_EXTEND_Y(400)
 	, CURSOR_SIZE(1.0f)
 	, CURSOR_ANGLE(0.0f)
 	, GAME_START(1)
@@ -55,13 +56,11 @@ Title::Title()
 
 	// 画像をロード
 	mCursor = LoadGraph("data/model/TextAsset/Cursor.png");
-	mTextTexture = LoadGraph("data/model/TitleAsset/texture/watergarasu.jpg", true);
-	mBackGroundGraph = LoadGraph("data/model/TitleAsset/Title.png", false);
+	mTextTexture = LoadGraph("data/model/TitleAsset/texture/watergarasu.jpg");
+	mBackGroundGraph = LoadGraph("data/model/TitleAsset/Title.png");
 
 	// テクスチャ貼り付け
 	MV1SetTextureGraphHandle(mTextModel[0], 0, mTextTexture, true);
-
-	camera = new Camera();
 
 	// サウンドのロード
 	mTitleBGM = new Sound("data/newSound/bgm/title.mp3");
@@ -82,7 +81,6 @@ Title::~Title()
 	MV1DeleteModel(*mTextModel);
 	DeleteGraph(mCursor);
 	DeleteGraph(mBackGroundGraph);
-	delete(camera);
 	delete mTitleBGM;
 	delete mTitleSE;
 	delete mCancelSE;
@@ -93,18 +91,19 @@ Title::~Title()
 /// <return>シーンのポインタ</return>
 SceneBase* Title::Update()
 {
+	UpdateKey();
 	// シーン遷移条件
-	if (mCursorPoint == GAME_START && CheckHitKey(KEY_INPUT_RETURN))
+	if (mCursorPoint == GAME_START && Key[KEY_INPUT_SPACE] == 1)
 	{
 		// タイトルの効果音
 		mTitleSE->PlaySE();
 		// タイトルのBGMを止める
 		mTitleBGM->StopMusic();
 		// 条件を満たしていたら次のシーンを生成してそのポインタを返す
-		return new Play();
+		return new Tutorial();
 
 	}
-	else if (mCursorPoint == EXIT && CheckHitKey(KEY_INPUT_RETURN))
+	else if (mCursorPoint == EXIT && Key[KEY_INPUT_SPACE] == 1)
 	{
 		// ゲーム終了を選択したときになる効果音
 		mCancelSE->PlaySE();
@@ -158,9 +157,14 @@ void Title::CursorUpdate()
 // 描画
 void Title::Draw()
 {
+	SetDrawMode(DX_DRAWMODE_BILINEAR);
 	// 背景描画
 	DrawExtendGraph(mBackPosX, mBackPosY,
 		BACK_EXTEND_X, BACK_EXTEND_Y, mBackGroundGraph, true);
+	
+	
+	//DrawGraph(mBackPosX, mBackPosY, mBackGroundGraph, FALSE);
+	
 
 	// 魚を描画
 	for (i = 0; i < FISH_NUM; i++)
@@ -186,7 +190,7 @@ void Title::Draw()
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, mAlpha);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, mTextAlpha);
 	SetFontSize(FONT_SIZE);
-	DrawString(750, 750, "Push The Enter", GetColor(0, 0, 0));
+	DrawString(750, 750, "Push The SPACE", GetColor(0, 0, 0));
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, mTextAlpha);
 }
 

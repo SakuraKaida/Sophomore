@@ -2,11 +2,13 @@
 #include "Title.h"
 #include "Camera.h"
 #include "Sound.h"
+#include "Score.h"
+#include  "Input.h"
 
 /// <summary>
 /// コンストラクタ
 /// </summary>
-Result::Result(int _Score)
+Result::Result(int* _Score)
 	: i(0)
 	, mAlpha(0)
 	, mTextAlpha(0)
@@ -76,7 +78,7 @@ Result::Result(int _Score)
 	// 画像をロード
 	mTexture = LoadGraph("data/model/ResultAsset/texture/watergarasu.jpg");
 	mCursor = LoadGraph("data/model/TextAsset/Cursor.png");
-	mBackGroundGraph = LoadGraph("data/model/ResultAsset/Result.png", false);
+	mBackGroundGraph = LoadGraph("data/model/ResultAsset/Result.png");
 	mRunkTexture[0] = LoadGraph("data/model/Medal/texture/Gold.png");
 	mRunkTexture[1] = LoadGraph("data/model/Medal/texture/Silver.png");
 	mRunkTexture[2] = LoadGraph("data/model/Medal/texture/Bronze.png");
@@ -93,13 +95,11 @@ Result::Result(int _Score)
 	mCancelSE = new Sound("data/newSound/se/cancelSE.mp3");
 
 	// スコアをもらう＆描画用スコア計算
-	mTmpScore = _Score;
-	mRunkScore = _Score;
-	for (i = DIGIT_NUM - 1; i > 0; i--)
-	{
-		mScore[i] = mTmpScore % 10;
-		mTmpScore = (mTmpScore - (mTmpScore % 10)) / 10;
-	}
+	mRunkScore = *_Score;
+	// スコアにプレイ時のスコアを渡す
+	SceneBase::mScore->SetResultScore(_Score);
+	// スコアをリザルトの位置にセットし直す
+	SceneBase::mScore->SetResultPosition();
 }
 
 /// <summary>
@@ -127,8 +127,9 @@ SceneBase* Result::Update()
 	// リザルト時のBGM
 	mResultBGM->PlayBGM();
 	
+	UpdateKey();
 	// シーン遷移条件
-	if (mCursorPoint == TITLE && CheckHitKey(KEY_INPUT_RETURN))
+	if (mCursorPoint == TITLE && Key[KEY_INPUT_SPACE] == 1)
 	{
 		// リスタートを選んだ時の効果音
 		mRestartSE->PlaySE();
@@ -137,7 +138,7 @@ SceneBase* Result::Update()
 		// 条件を満たしていたら次のシーンを生成してそのポインタを返す
 		return new Title();
 	}
-	else if (mCursorPoint == EXIT && CheckHitKey(KEY_INPUT_RETURN))
+	else if (mCursorPoint == EXIT && Key[KEY_INPUT_SPACE] == 1)
 	{
 		// ゲーム終了を選んだ時の効果音
 		mCancelSE->PlaySE();
@@ -220,17 +221,12 @@ void Result::Draw()
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, mAlpha);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, mTextAlpha);
 	SetFontSize(FONT_SIZE);
-	DrawString(750, 750, "Push The Enter", GetColor(0, 0, 0));
+	DrawString(750, 750, "Push The SPACE", GetColor(0, 0, 0));
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, mTextAlpha);
 
 	// スコアを描画
-	SetFontSize(SCORE_FONT_SIZE);
-	DrawString(mScorePosX, mScorePosY, "SCORE:", mColor);
-	for (i = 0; i < DIGIT_NUM; i++)
-	{
-		DrawFormatString(NUM_POS + NUM_SPACE * i, mScorePosY, mColor, "%d", mScore[i]);
-	}
-
+	SceneBase::mScore->Draw();
+	// ランク決定
 	Runk();
 }
 

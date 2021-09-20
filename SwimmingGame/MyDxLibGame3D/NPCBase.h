@@ -10,7 +10,7 @@
 class NPCBase
 {
 public:
-	NPCBase();	//コンストラクタ
+	NPCBase(int _sourceModelHandle);	//コンストラクタ
 
 	~NPCBase();	//デストラクタ
 

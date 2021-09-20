@@ -171,7 +171,6 @@
     <ClCompile Include="Jump.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Play.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Pool.cpp" />
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="SceneBase.cpp">
@@ -186,6 +185,7 @@
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Timing.cpp" />
     <ClCompile Include="Title.cpp" />
+    <ClCompile Include="Tutorial.cpp" />
     <ClCompile Include="UIBase.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -200,7 +200,6 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Jump.h" />
     <ClInclude Include="Play.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="Pool.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="SceneBase.h">
@@ -215,6 +214,7 @@
     <ClInclude Include="Time.h" />
     <ClInclude Include="Timing.h" />
     <ClInclude Include="Title.h" />
+    <ClInclude Include="Tutorial.h" />
     <ClInclude Include="UIBase.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

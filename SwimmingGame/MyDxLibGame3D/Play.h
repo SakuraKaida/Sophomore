@@ -1,19 +1,19 @@
 #pragma once
 #include "SceneBase.h"
 
-
 // 前方宣言
 class FishManager;
 class Pool;
 class Timing;
 class BackGround;
-class Player;
+class UIGoal;
 class HitChecker;
 class Camera;
 class Result;
 class BackGround;
 class Time;
 class Sound;
+class Score;
 
 /// <summary>
 /// プレイシーンの生成、描画
@@ -40,8 +40,15 @@ private:
     // 魚が動き始めるまでのカウント
     int startCount;
 
+    //ダンス集合時のポジションについてから待つフレーム数andou
+    int mWaitDanceCount;
+
     // スコアを保持する変数
     int mScore;
+    // スコアの割合ポイントを持つ変数
+    int mScoreRadius;
+    // スコアフラグ
+    bool mScoreFlag;
 
     // 魚(モブ)
     FishManager* fishManager =  nullptr ;
@@ -49,14 +56,14 @@ private:
     Pool* pool = nullptr;
     // リズムボタン
     Timing* timing = nullptr;
-    // 魚(プレイヤー)
-	Player* player;
+	// UI（ゴール
+	//UIGoal* uiGoal;
 	// 当たり判定
 	HitChecker* hit;
     // バックグラウンド
     BackGround* backGround;
     // 時間の生成
-    Time* mtime;
+    Time* time;
 
     // リザルトシーン
     Result* result;
@@ -72,5 +79,13 @@ private:
     // シンクロでちゃぷちゃぷする音
     Sound* mWaterOutSound;
 
+    //アーティスティックスイミング時の音楽andou
+    Sound* mDancePlaySE;
 
+    /////// デバック用 /////////
+    float test;
+    float test02;
+    float test03;
+
+    void CameraPosUpDate();
 };
