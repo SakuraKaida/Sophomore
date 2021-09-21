@@ -182,7 +182,7 @@ void Title::Draw()
 		MV1DrawModel(mTextModel[i]);
 	}
 
-	DrawExtendGraph()
+	DrawExtendGraph(380,160,1500,550,mRubiGraph,TRUE);
 
 	// アルファで表示する画像を描画
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, mAlpha);

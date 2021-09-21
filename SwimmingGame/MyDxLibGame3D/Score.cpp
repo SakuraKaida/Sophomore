@@ -39,7 +39,8 @@ Score::~Score()
 /// </summary>
 void Score::Draw()
 {
-	DrawGraph(mScorePosX, mScorePosY, mScoreHandle, true);
+	//DrawGraph(mScorePosX, mScorePosY, mScoreHandle, true);
+	DrawExtendGraph(mScorePosX, mScorePosY, 300, 100, mScoreHandle, TRUE);
 	for (i = 0; i < DIGIT_NUM; i++)
 	{
 		for (j = 0; j < NUMBER_NUM; j++)
@@ -47,6 +48,7 @@ void Score::Draw()
 			if (mS[i] == j)
 			{
 				DrawGraph(NUM_POS + NUM_SPACE * i, mScorePosY, mNumberHandle[j], true);
+				//DrawExtendGraph(NUM_POS + NUM_SPACE * i, mScorePosY, 10, 100, mNumberHandle[j], TRUE);
 			}
 		}
 	}
