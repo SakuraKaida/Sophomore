@@ -95,6 +95,13 @@ private:
     // アイコンの座標Y
     int mIconPosY;
 
+    // チーム名画像
+    int mTeamNameGraph;
+    // チーム名座標X
+    int mTeamNamePosX;
+    // チーム名座標Y
+    int mTeamNamePosY;
+
     class Sound* mTitleBGM;
     class Sound* mTitleSE;
     class Sound* mCancelSE;

@@ -48,8 +48,10 @@ Title::Title()
 	, mCancelSE(nullptr)
 	, mRubiPosX(380)
 	, mRubiPosY(160)
-	, mIconPosX(1400)
-	, mIconPosY(960)
+	, mIconPosX(1180)
+	, mIconPosY(980)
+	, mTeamNamePosX(1280)
+	, mTeamNamePosY(960)
 {
 	SetScene(title);
 	// モデルをロード
@@ -64,6 +66,7 @@ Title::Title()
 	mBackGroundGraph = LoadGraph("data/model/TitleAsset/Title.png");
 	mRubiGraph = LoadGraph("data/model/TitleAsset/titleRubi.png");
 	mIconGraph = LoadGraph("data/model/TitleAsset/Icon1.png");
+	mTeamNameGraph = LoadGraph("data/model/TitleAsset/team.png");
 
 	// テクスチャ貼り付け
 	MV1SetTextureGraphHandle(mTextModel[0], 0, mTextTexture, true);
@@ -191,6 +194,8 @@ void Title::Draw()
 	DrawExtendGraph(mRubiPosX, mRubiPosY,1500,550,mRubiGraph,TRUE);
 	// アイコンを描画
 	DrawGraph(mIconPosX, mIconPosY, mIconGraph, TRUE);
+	// チーム名描画
+	DrawGraph(mTeamNamePosX, mTeamNamePosY, mTeamNameGraph, TRUE);
 
 	// アルファで表示する画像を描画
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, mAlpha);
