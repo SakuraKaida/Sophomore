@@ -64,6 +64,11 @@ Tutorial::Tutorial()
 /// </summary>
 Tutorial::~Tutorial()
 {
+	// 画像の削除
+	DeleteGraph(mTutorialGraph);
+	DeleteGraph(mBackGroundGraph);
+	DeleteGraph(mStartText);
+	DeleteGraph(mSkipText);
 	// サウンドデータの削除
 	mTutorialBGM->StopMusic();
 	delete mTutorialBGM;
@@ -125,8 +130,6 @@ void Tutorial::TextUpdate()
 void Tutorial::Draw()
 {
 	// 背景描画
-	//DrawExtendGraph(mBackPosX, mBackPosY,
-		//BACK_EXTEND_X, BACK_EXTEND_Y, mBackGroundGraph, TRUE);
 	DrawGraph(mBackPosX, mBackPosY, mBackGroundGraph, TRUE);
 	// チュートリアル画像の描画
 	//DrawExtendGraph(mTutorialkPosX, mTutorialPosY,

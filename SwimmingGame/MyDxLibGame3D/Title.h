@@ -88,6 +88,13 @@ private:
     // ルビの座標Y
     int mRubiPosY;
 
+    // アイコン
+    int mIconGraph;
+    // アイコンの座標X
+    int mIconPosX;
+    // アイコンの座標Y
+    int mIconPosY;
+
     class Sound* mTitleBGM;
     class Sound* mTitleSE;
     class Sound* mCancelSE;

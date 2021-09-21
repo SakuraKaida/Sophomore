@@ -46,8 +46,10 @@ Title::Title()
 	, mTitleBGM(nullptr)
 	, mTitleSE(nullptr)
 	, mCancelSE(nullptr)
-	, mRubiPosX()
-	, mRubiPosY()
+	, mRubiPosX(380)
+	, mRubiPosY(160)
+	, mIconPosX(1400)
+	, mIconPosY(960)
 {
 	SetScene(title);
 	// モデルをロード
@@ -61,6 +63,7 @@ Title::Title()
 	mTextTexture = LoadGraph("data/model/TitleAsset/texture/watergarasu.jpg");
 	mBackGroundGraph = LoadGraph("data/model/TitleAsset/Title.png");
 	mRubiGraph = LoadGraph("data/model/TitleAsset/titleRubi.png");
+	mIconGraph = LoadGraph("data/model/TitleAsset/Icon1.png");
 
 	// テクスチャ貼り付け
 	MV1SetTextureGraphHandle(mTextModel[0], 0, mTextTexture, true);
@@ -84,6 +87,8 @@ Title::~Title()
 	MV1DeleteModel(*mTextModel);
 	DeleteGraph(mCursor);
 	DeleteGraph(mBackGroundGraph);
+	DeleteGraph(mRubiGraph);
+	DeleteGraph(mIconGraph);
 	delete mTitleBGM;
 	delete mTitleSE;
 	delete mCancelSE;
@@ -182,7 +187,10 @@ void Title::Draw()
 		MV1DrawModel(mTextModel[i]);
 	}
 
-	DrawExtendGraph(380,160,1500,550,mRubiGraph,TRUE);
+	// ルビを描画
+	DrawExtendGraph(mRubiPosX, mRubiPosY,1500,550,mRubiGraph,TRUE);
+	// アイコンを描画
+	DrawGraph(mIconPosX, mIconPosY, mIconGraph, TRUE);
 
 	// アルファで表示する画像を描画
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, mAlpha);
