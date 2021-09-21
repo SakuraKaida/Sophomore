@@ -1,2 +1,3 @@
-﻿  Title.cpp
-  MyDxLibGame3D.vcxproj -> C:\Users\user\Desktop\honobono\SwimmingGame\Debug\MyDxLibGame3D.exe
+﻿  Result.cpp
+C:\Users\student\Desktop\Sophomore\SwimmingGame\MyDxLibGame3D\Result.cpp(60,27): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+  MyDxLibGame3D.vcxproj -> C:\Users\student\Desktop\Sophomore\SwimmingGame\Debug\MyDxLibGame3D.exe

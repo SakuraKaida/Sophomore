@@ -29,8 +29,8 @@ Title::Title()
 	, ANGLE(0.0f)
 	, FISH_NUM(2)
 	, TEXT_NUM(3)
-	, BACK_EXTEND_X(570)
-	, BACK_EXTEND_Y(400)
+	, BACK_EXTEND_X(2000)
+	, BACK_EXTEND_Y(1100)
 	, CURSOR_SIZE(1.0f)
 	, CURSOR_ANGLE(0.0f)
 	, GAME_START(1)
@@ -46,6 +46,8 @@ Title::Title()
 	, mTitleBGM(nullptr)
 	, mTitleSE(nullptr)
 	, mCancelSE(nullptr)
+	, mRubiPosX()
+	, mRubiPosY()
 {
 	SetScene(title);
 	// モデルをロード
@@ -58,6 +60,7 @@ Title::Title()
 	mCursor = LoadGraph("data/model/TextAsset/Cursor.png");
 	mTextTexture = LoadGraph("data/model/TitleAsset/texture/watergarasu.jpg");
 	mBackGroundGraph = LoadGraph("data/model/TitleAsset/Title.png");
+	mRubiGraph = LoadGraph("data/model/TitleAsset/titleRubi.png");
 
 	// テクスチャ貼り付け
 	MV1SetTextureGraphHandle(mTextModel[0], 0, mTextTexture, true);
@@ -162,10 +165,6 @@ void Title::Draw()
 	DrawExtendGraph(mBackPosX, mBackPosY,
 		BACK_EXTEND_X, BACK_EXTEND_Y, mBackGroundGraph, true);
 	
-	
-	//DrawGraph(mBackPosX, mBackPosY, mBackGroundGraph, FALSE);
-	
-
 	// 魚を描画
 	for (i = 0; i < FISH_NUM; i++)
 	{
@@ -182,6 +181,8 @@ void Title::Draw()
 		MV1SetScale(mTextModel[i], mTextSize[i]);
 		MV1DrawModel(mTextModel[i]);
 	}
+
+	DrawExtendGraph()
 
 	// アルファで表示する画像を描画
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, mAlpha);

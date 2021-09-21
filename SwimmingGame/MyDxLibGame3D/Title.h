@@ -81,6 +81,13 @@ private:
     bool mJympFlag[2];                     // ジャンプフラグ
     float mKeepPower;                      // ジャンプ量ランダム値セット変数
 
+    // ルビの画像
+    int mRubiGraph;
+    // ルビの座標X
+    int mRubiPosX;
+    // ルビの座標Y
+    int mRubiPosY;
+
     class Sound* mTitleBGM;
     class Sound* mTitleSE;
     class Sound* mCancelSE;
