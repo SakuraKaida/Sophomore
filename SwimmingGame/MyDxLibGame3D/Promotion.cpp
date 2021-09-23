@@ -9,16 +9,31 @@ Promotion::Promotion()
 	: mDrawPos(VGet(0.0f, 13.0f, 68.0f))  // 表示させるポジション
 	, mPromo(-1)
 {
+	// モデルのロード
 	mPromo = MV1LoadModel("data/promotion/untitled.mv1");
 
-	// 一番シンプルな画像
+	// 画像のロード
 	mSimple = LoadGraph("data/promotion/sinkuro.jpg");
+	mFalsoc = LoadGraph("data/promotion/falsoc.jpg");;
+	mSchool = LoadGraph("data/promotion/gakkou.jpg");;
+	mHonobono = LoadGraph("data/promotion/honobono.jpg");;
+	mKora = LoadGraph("data/promotion/ko-ra.jpg");;
+	mJapan = LoadGraph("data/promotion/nihon.jpg");;
+	mYamako = LoadGraph("data/promotion/yamako.jpg");;
 }
 
 Promotion::~Promotion()
 {
+	// モデルデータの削除
 	MV1DeleteModel(mPromo);
+	// 画像データの削除
 	DeleteGraph(mSimple);
+	DeleteGraph(mFalsoc);
+	DeleteGraph(mSchool);
+	DeleteGraph(mHonobono);
+	DeleteGraph(mKora);
+	DeleteGraph(mJapan);
+	DeleteGraph(mYamako);
 }
 
 void Promotion::Draw()
