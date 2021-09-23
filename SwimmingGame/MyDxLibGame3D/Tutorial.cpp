@@ -24,15 +24,16 @@ Tutorial::Tutorial()
 	, mTime(1000)
 	, mTimeMax(1000)
 	, mGageX1(50)
-	, mGageX2(300)
-	, mGageY1(50)
-	, mGageY2(70)
-	, mStartTextPosX(20)
-	, mStartTextPosY(15)
-	, mSkipTextPosX(40)
-	, mSkipTextPosY(70)
-	, mSkipDrawTime(750)
+	, mGageX2(600)
+	, mGageY1(100)
+	, mGageY2(130)
+	, mStartTextPosX(15)
+	, mStartTextPosY(25)
+	, mSkipTextPosX(100)
+	, mSkipTextPosY(150)
+	, mSkipDrawTime(950)
 	, mSkipDrawFlag(false)
+	, mSkipFlag(false)
 {
 	// シーン変更
 	SetScene(tutorial);
@@ -64,6 +65,11 @@ Tutorial::Tutorial()
 /// </summary>
 Tutorial::~Tutorial()
 {
+	// 画像の削除
+	DeleteGraph(mTutorialGraph);
+	DeleteGraph(mBackGroundGraph);
+	DeleteGraph(mStartText);
+	DeleteGraph(mSkipText);
 	// サウンドデータの削除
 	mTutorialBGM->StopMusic();
 	delete mTutorialBGM;
@@ -80,7 +86,7 @@ SceneBase* Tutorial::Update()
 	mTime--;
 	UpdateKey();
 	// シーン遷移の条件
-	if (Key[KEY_INPUT_SPACE] == 1 || mTime < 0)
+	if (mSkipFlag || mTime < 0)
 	{
 		// チュートリアルのBGMを止める
 		mTutorialBGM->StopMusic();
@@ -102,6 +108,12 @@ void Tutorial::TextUpdate()
 	if (mTime < mSkipDrawTime)
 	{
 		mSkipDrawFlag = true;
+
+		// スキップの文字が描画されているときにスペースが押されたら
+		if (Key[KEY_INPUT_SPACE] == 1)
+		{
+			mSkipFlag = true;  // シーン遷移フラグをtrueにする
+		}
 	}
 
 	// 画像の透明度を変更
@@ -125,8 +137,6 @@ void Tutorial::TextUpdate()
 void Tutorial::Draw()
 {
 	// 背景描画
-	//DrawExtendGraph(mBackPosX, mBackPosY,
-		//BACK_EXTEND_X, BACK_EXTEND_Y, mBackGroundGraph, TRUE);
 	DrawGraph(mBackPosX, mBackPosY, mBackGroundGraph, TRUE);
 	// チュートリアル画像の描画
 	//DrawExtendGraph(mTutorialkPosX, mTutorialPosY,
@@ -142,6 +152,7 @@ void Tutorial::Draw()
 	{
 		// スキップテキストの描画
 		DrawGraph(mSkipTextPosX, mSkipTextPosY, mSkipText, TRUE);
+
 	}
 
 	//枠を描画
