@@ -9,6 +9,7 @@
 #include "Sound.h"
 #include "Score.h"
 #include "Common.h"
+#include "Promotion.h"
 
 
 // コンストラクタ
@@ -45,6 +46,8 @@ Play::Play()
 
 	camera = new Camera();
 
+	promo = new Promotion();
+
 	fishManager->CreatFish();
 
 	mPlayBGM1 = new Sound("data/newSound/bgm/bgm_1.wav");
@@ -58,6 +61,7 @@ Play::Play()
 	mDancePlaySE = new Sound("data/newsound/bgm/BGM_3.wav");
 
 	mPlayBGM1->PlayBackBGM();
+	mNowSound = mPlayBGM1;
 
 	///// デバック用 //////
 	test = 0.0f;
@@ -84,7 +88,7 @@ Play::~Play()
 	mPlayBGM1->StopMusic();
 	mPlayBGM2->StopMusic();
 	mPlayBGM3->StopMusic();
-
+	mNowSound->StopMusic();
 
 	//音楽の停止
 	mDancePlaySE->StopMusic();
@@ -113,7 +117,7 @@ SceneBase* Play::Update()
 		mScore = SceneBase::mScore->GetResult();
 		return new Result(&mScore);
 	}
-
+	
 	// シーン遷移条件(デバック用：右シフトキーを押すと遷移)
 	if (CheckHitKey(KEY_INPUT_RSHIFT))
 	{
@@ -134,7 +138,7 @@ SceneBase* Play::Update()
 	{
 		camera->FixedCameraUpUpdate();
 	}
-	else if (CheckHitKey(KEY_INPUT_RIGHT))// →押したら右固定カメラ
+	else if (CheckHitKey(KEY_INPUT_PERIOD))// →押したら右固定カメラ
 	{
 		camera->FixedCameraRightUpdate(test02);
 		CameraPosUpDate();                // 引数（test02）の更新
@@ -146,7 +150,7 @@ SceneBase* Play::Update()
 	}
 
 	// リズムボタンUI更新
-	timing->Update();
+	timing->Update(mNowSound->CheckBGM());
 	// スコアの割合をもらってくる
 	mScoreRadius = timing->GetRadius();
 	// スコアのフラグをもらう
@@ -159,7 +163,7 @@ SceneBase* Play::Update()
 
 
 	startCount++;
-	if (startCount >= 60)
+	if (startCount >= 30)
 	{
 		// 魚の制御
 		fishManager->Updata(timing->GetJudg(), time->GetDeltaTime(), fishManager->GetStopFlag());
@@ -178,6 +182,7 @@ SceneBase* Play::Update()
 				mPlayBGM1->StopMusic();
 				//ダンス時の音楽を流す
 				mDancePlaySE->PlayBackBGM();
+				mNowSound = mDancePlaySE;
 			}
 		}
 
@@ -196,10 +201,13 @@ void Play::Draw()
 	fishManager->Draw();
 	// プール描画
 	pool->Draw();
+
+	promo->Draw();
+
 	// リズムボタンUI描画
 	timing->Draw();
 
-	SceneBase::mScore->Draw();
+	SceneBase::mScore->Draw(GetScene());
 
 	//それぞれの位置が分かりやすくなるように一本の線を表示（デバック用）
 	int redColor = GetColor(255, 0, 0);				//真ん中の色

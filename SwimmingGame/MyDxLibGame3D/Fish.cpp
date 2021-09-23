@@ -61,7 +61,8 @@ void Fish::Updata(int _judge, float _deltaTime, bool _startflag)
 void Fish::JumpUpdata(int _judge, bool _startflag, float _deltaTime)
 {
 	// ボタンが押されたら、またはtimingゲージが縮小し終わったらジャンプする（ゲージが表示されてなかったらジャンプしない）
-	if ((Key[KEY_INPUT_SPACE] == 1 && mJump->GetIsGround()) && _judge != 4 ||
+	if (((Key[KEY_INPUT_RIGHT] == 1 || Key[KEY_INPUT_LEFT] == 1 )
+		&& mJump->GetIsGround()) && _judge != 4 ||
 		_judge == 3)
 	{
 		// ジャンプの更新をするようにする
@@ -156,7 +157,6 @@ VECTOR Fish::MoveTargetPos(const VECTOR _SetPos, VECTOR& _NowPos, VECTOR& _Rotat
 	VECTOR normPosToSetPos = VNorm(posToSetPos);
 	mTempVelocity = VScale(normPosToSetPos, DANCE_VELOCITY);
 
-
 	//止まるとき
 	if (CheckStopped(_SetPos, _NowPos))
 	{
@@ -224,10 +224,10 @@ VECTOR Fish::MoveAimlessWandering(VECTOR& _nowPos)
 /// <returns>止まっていい時はtrue、止まってはいけない時はfalse</returns>
 bool Fish::CheckStopped(const VECTOR _targetPos, const VECTOR _nowPos)
 {
-
 	/*-----------モデルを止めるために停止範囲の距離の計算----------*/
-
+	//距離
 	VECTOR posToSetPos = VSub(_targetPos, _nowPos);
+	//向き
 	VECTOR normPosToSetPos = VNorm(posToSetPos);
 
 	//mPosからmSetDancePosまでの距離の計算
