@@ -35,17 +35,15 @@ Play::Play()
 
 	// ‹›¶¬
 	fishManager = new FishManager();
-
 	// ƒŠƒYƒ€ƒ{ƒ^ƒ“UI¶¬
 	timing = new Timing();
-
 	// ”wŒi‚Ì¶¬
 	backGround = new BackGround();
 	// ŽžŠÔ‚Ì¶¬
 	time = new Time();
-
+	// ƒJƒƒ‰‚Ì¶¬
 	camera = new Camera();
-
+	// L‚Ì¶¬
 	promo = new Promotion();
 
 	fishManager->CreatFish();
@@ -201,9 +199,8 @@ void Play::Draw()
 	fishManager->Draw();
 	// ƒv[ƒ‹•`‰æ
 	pool->Draw();
-
+	// L‚Ì•`‰æ
 	promo->Draw();
-
 	// ƒŠƒYƒ€ƒ{ƒ^ƒ“UI•`‰æ
 	timing->Draw();
 
