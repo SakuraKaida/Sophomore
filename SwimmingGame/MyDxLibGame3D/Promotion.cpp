@@ -11,15 +11,15 @@ Promotion::Promotion()
 	: mBaseDrawPos1{VGet(0.0f, 10.0f, 70.0f),       // 土台１
 					VGet(0.0f, 10.0f, -70.0f),      // 土台２
 }
-	, mBaseDrawPos2{VGet(0.0f, 10.0f, 10.0f),       // 土台１
-					VGet(0.0f, 10.0f, 10.0f),      // 土台１
+	, mBaseDrawPos2{VGet(50.0f, 10.0f, 0.0f),       // 土台１
+					VGet(-50.0f, 10.0f, 0.0f),      // 土台１
 }
 	, mPromoDrawPos{VGet(-25.0f, 10.0f, 69.9f),    // シンクロ広告
-					VGet(0.0f, 10.0f, 69.9f),      // シンクロのポジション
-					VGet(0.0f, 10.0f, 69.9f),      // シンクロのポジション
-					VGet(0.0f, 10.0f, 69.9f),      // シンクロのポジション
-					VGet(0.0f, 10.0f, 69.9f),      // シンクロのポジション
-					VGet(0.0f, 10.0f, 69.9f),      // シンクロのポジション
+					VGet(25.0f, 10.0f, 69.9f),      // シンクロのポジション
+					VGet(50.0f, 10.0f, 45.0f),      // シンクロのポジション
+					VGet(-50.0f, 10.0f, 45.0f),      // シンクロのポジション
+					VGet(50.0f, 10.0f, 10.0f),      // シンクロのポジション
+					VGet(-50.0f, 10.0f, 10.0f),      // シンクロのポジション
 					VGet(0.0f, 10.0f, 69.9f),      // シンクロのポジション
 }
 	, mSetSize(VGet(0.05f, 0.05f, 0.1f))
@@ -31,9 +31,6 @@ Promotion::Promotion()
 	for (int i = 0; i < PROMOBASE_NUM; i++)
 	{
 		mPromoBase1[i] = MV1LoadModel("data/promotion/untitled.mv1");
-	}
-	for (int i = 2; i < PROMOBASE_NUM + 2; i++)
-	{
 		mPromoBase2[i] = MV1LoadModel("data/promotion/untitled2.mv1");
 	}
 	// 画像のロード
@@ -75,21 +72,22 @@ void Promotion::SetPosition()
 	for (int i = 0; i < PROMOBASE_NUM; i++)
 	{
 		MV1SetScale(mPromoBase1[i], mSetSize);
-		MV1SetPosition(mPromoBase1[i], mBaseDrawPos1[i]);
-	}
-	for (int i = 0; i < PROMOBASE_NUM; i++)
-	{
 		MV1SetScale(mPromoBase2[i], mSetSize);
+
+		MV1SetPosition(mPromoBase1[i], mBaseDrawPos1[i]);
 		MV1SetPosition(mPromoBase2[i], mBaseDrawPos2[i]);
 	}
-
 	
-	//for (int i = 0; i < 7; i++)
-	//{
-	//	mPromo[i] = MV1LoadModel("data/promotion/base.mv1");
-	//	MV1SetScale(mPromo[i], mSetSize);
-	//	MV1SetPosition(mPromo[i], mPromoDrawPos[i]);
-	//}
+	for (int i = 0; i < 7; i++)
+	{
+		mPromo[i] = MV1LoadModel("data/promotion/base.mv1");
+		MV1SetScale(mPromo[i], mSetSize);
+		MV1SetPosition(mPromo[i], mPromoDrawPos[i]);
+	}
+	MV1SetRotationXYZ(mPromo[2], VGet(0.0f, 90.0f * DX_PI_F / 180.0f, 0.0));
+	MV1SetRotationXYZ(mPromo[3], VGet(0.0f, 90.0f * DX_PI_F / 180.0f, 0.0));
+
+
 	//// モデルにテクスチャ貼り付け
 	//MV1SetTextureGraphHandle(mPromo[0], 0, mSimple, TRUE);
 	//MV1SetTextureGraphHandle(mPromo[1], 0, mSimple, TRUE);
@@ -102,21 +100,18 @@ void Promotion::SetPosition()
 }
 
 void Promotion::Draw()
-{
-
-	/*MV1SetRotationXYZ(mPromo, VGet(90.0f * DX_PI_F / 180.0f, 0.0f, 0.0f));*/
-	
+{	
 	for (int i = 0; i < PROMOBASE_NUM; i++)
 	{
 		MV1DrawModel(mPromoBase1[i]);
 		MV1DrawModel(mPromoBase2[i]);
 	}
 	
-	/*for (int i = 0; i < 7; i++)
+	for (int i = 0; i < 7; i++)
 	{
 		MV1DrawModel(mPromo[i]);
 	}
-	*/
+	
 
 	//// 一旦
 	//if (GetCameraAngleHRotate() == 0.0f)
