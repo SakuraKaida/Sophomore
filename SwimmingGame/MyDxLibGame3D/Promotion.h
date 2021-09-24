@@ -17,9 +17,9 @@ public:
 
 
 	/// <summary>
-	/// 広告のポジションをセット
+	/// 広告のセット
 	/// </summary>
-	void SetPosition();
+	void SetPromo();
 
 private:
 	// 表示させるポジション
@@ -27,7 +27,8 @@ private:
 	const VECTOR mBaseDrawPos1[2];
 	const VECTOR mBaseDrawPos2[2];
 	const VECTOR mSetSize;
-
+	// ベースのテクスチャ
+	int mBase;
 	// シンプルな広告
 	int mSimple;
 	// ファルソックの広告

@@ -1,2 +1,6 @@
-﻿  Promotion.cpp
+﻿  Play.cpp
+C:\Users\student\Desktop\Sophomore\SwimmingGame\MyDxLibGame3D\Play.cpp(261,18): warning C4305: '+=': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\Sophomore\SwimmingGame\MyDxLibGame3D\Play.cpp(265,18): warning C4305: '-=': 'double' から 'float' へ切り詰めます。
+  Promotion.cpp
+  コードを生成中...
   MyDxLibGame3D.vcxproj -> C:\Users\student\Desktop\Sophomore\SwimmingGame\Debug\MyDxLibGame3D.exe

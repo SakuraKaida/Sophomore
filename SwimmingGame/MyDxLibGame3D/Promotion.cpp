@@ -14,13 +14,13 @@ Promotion::Promotion()
 	, mBaseDrawPos2{VGet(50.0f, 10.0f, 0.0f),       // 土台１
 					VGet(-50.0f, 10.0f, 0.0f),      // 土台１
 }
-	, mPromoDrawPos{VGet(-25.0f, 10.0f, 69.9f),    // シンクロ広告
-					VGet(25.0f, 10.0f, 69.9f),      // シンクロのポジション
-					VGet(50.0f, 10.0f, 45.0f),      // シンクロのポジション
-					VGet(-50.0f, 10.0f, 45.0f),      // シンクロのポジション
-					VGet(50.0f, 10.0f, 10.0f),      // シンクロのポジション
-					VGet(-50.0f, 10.0f, 10.0f),      // シンクロのポジション
-					VGet(0.0f, 10.0f, 69.9f),      // シンクロのポジション
+	, mPromoDrawPos{VGet(-25.0f, 10.0f, 69.0f),     // シンクロ広告
+					VGet(25.0f, 10.0f, 69.0f),      // ファルソック広告
+					VGet(49.0f, 10.0f, 45.0f),      // 学校
+					VGet(-49.0f, 10.0f, 45.0f),     // ほのぼの
+					VGet(49.0f, 10.0f, 0.0f),       // コーラ
+					VGet(-49.0f, 10.0f, 10.0f),     // にほん
+					VGet(49.0f, 10.0f, -30.0f),     // やまこ
 }
 	, mSetSize(VGet(0.05f, 0.05f, 0.1f))
 	, mPromo{ -1 }
@@ -33,17 +33,20 @@ Promotion::Promotion()
 		mPromoBase1[i] = MV1LoadModel("data/promotion/untitled.mv1");
 		mPromoBase2[i] = MV1LoadModel("data/promotion/untitled2.mv1");
 	}
-	// 画像のロード
-	//mSimple = LoadGraph("data/promotion/Texture/sinkuro.png");
-	//mFalsoc = LoadGraph("data/promotion/Texture/falsoc.png");
-	//mSchool = LoadGraph("data/promotion/Texture/gakkou.png");
-	//mHonobono = LoadGraph("data/promotion/Texture/honobono.png");
-	//mKora = LoadGraph("data/promotion/Texture/ko-ra.png");
-	//mJapan = LoadGraph("data/promotion/Texture/nihon.png");
-	//mYamako = LoadGraph("data/promotion/Texture/yamako.png");	
+	for (int i = 0; i < PROMO_NUM; i++)
+	{
+		mPromo[i] = MV1LoadModel("data/promotion/base.mv1");
+	}
 
-	// ポジションのセット
-	SetPosition();
+	// 画像のロード
+	mBase = LoadGraph("data/promotion/Texture/base.png");
+	mSimple = LoadGraph("data/promotion/Texture/sinkuro.png");
+	mFalsoc = LoadGraph("data/promotion/Texture/falsoc.png");
+	mSchool = LoadGraph("data/promotion/Texture/gakkou.png");
+	mHonobono = LoadGraph("data/promotion/Texture/honobono.png");
+	mKora = LoadGraph("data/promotion/Texture/ko-ra.png");
+	mJapan = LoadGraph("data/promotion/Texture/nihon.png");
+	mYamako = LoadGraph("data/promotion/Texture/yamako.png");	
 }
 
 Promotion::~Promotion()
@@ -66,7 +69,7 @@ Promotion::~Promotion()
 	}
 }
 
-void Promotion::SetPosition()
+void Promotion::SetPromo()
 {
 	// 広告のポジション・大きさのセット
 	for (int i = 0; i < PROMOBASE_NUM; i++)
@@ -76,31 +79,43 @@ void Promotion::SetPosition()
 
 		MV1SetPosition(mPromoBase1[i], mBaseDrawPos1[i]);
 		MV1SetPosition(mPromoBase2[i], mBaseDrawPos2[i]);
+		MV1SetTextureGraphHandle(mPromoBase1[i], 0, mBase, TRUE);
+		MV1SetTextureGraphHandle(mPromoBase2[i], 0, mBase, TRUE);
 	}
+	MV1SetRotationXYZ(mPromoBase1[1], VGet(0.0f, 180.0f * DX_PI_F / 180.0f, 0.0));
+	MV1SetRotationXYZ(mPromoBase2[1], VGet(0.0f, 180.0f * DX_PI_F / 180.0f, 0.0));
+
 	
-	for (int i = 0; i < 7; i++)
+
+
+	for (int i = 0; i < PROMO_NUM; i++)
 	{
-		mPromo[i] = MV1LoadModel("data/promotion/base.mv1");
 		MV1SetScale(mPromo[i], mSetSize);
 		MV1SetPosition(mPromo[i], mPromoDrawPos[i]);
 	}
 	MV1SetRotationXYZ(mPromo[2], VGet(0.0f, 90.0f * DX_PI_F / 180.0f, 0.0));
-	MV1SetRotationXYZ(mPromo[3], VGet(0.0f, 90.0f * DX_PI_F / 180.0f, 0.0));
+	MV1SetRotationXYZ(mPromo[3], VGet(0.0f, 270.0f * DX_PI_F / 180.0f, 0.0));
+	MV1SetRotationXYZ(mPromo[4], VGet(0.0f, 90.0f * DX_PI_F / 180.0f, 0.0));
+	MV1SetRotationXYZ(mPromo[5], VGet(0.0f, 270.0f * DX_PI_F / 180.0f, 0.0));
+	MV1SetRotationXYZ(mPromo[6], VGet(0.0f, 90.0f * DX_PI_F / 180.0f, 0.0));
 
 
 	//// モデルにテクスチャ貼り付け
-	//MV1SetTextureGraphHandle(mPromo[0], 0, mSimple, TRUE);
-	//MV1SetTextureGraphHandle(mPromo[1], 0, mSimple, TRUE);
-	//MV1SetTextureGraphHandle(mPromo[2], 0, mSimple, TRUE);
-	//MV1SetTextureGraphHandle(mPromo[3], 0, mSimple, TRUE);
-	//MV1SetTextureGraphHandle(mPromo[4], 0, mSimple, TRUE);
-	//MV1SetTextureGraphHandle(mPromo[5], 0, mSimple, TRUE);
-	//MV1SetTextureGraphHandle(mPromo[6], 0, mSimple, TRUE);
+	MV1SetTextureGraphHandle(mPromo[0], 0, mSimple, TRUE);
+	MV1SetTextureGraphHandle(mPromo[1], 0, mFalsoc, TRUE);
+	MV1SetTextureGraphHandle(mPromo[2], 0, mSchool, TRUE);
+	MV1SetTextureGraphHandle(mPromo[3], 0, mHonobono, TRUE);
+	MV1SetTextureGraphHandle(mPromo[4], 0, mKora, TRUE);
+	MV1SetTextureGraphHandle(mPromo[5], 0, mJapan, TRUE);
+	MV1SetTextureGraphHandle(mPromo[6], 0, mYamako, TRUE);
 
 }
 
 void Promotion::Draw()
 {	
+
+	// ポジションのセット
+	SetPromo();
 	for (int i = 0; i < PROMOBASE_NUM; i++)
 	{
 		MV1DrawModel(mPromoBase1[i]);
