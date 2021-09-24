@@ -11,13 +11,22 @@ public:
 	~Promotion();
 
 	/// <summary>
-	/// 広告の表示
+	/// 広告の描画
 	/// </summary>
 	void Draw();
 
+
+	/// <summary>
+	/// 広告のポジションをセット
+	/// </summary>
+	void SetPosition();
+
 private:
 	// 表示させるポジション
-	const VECTOR mDrawPos;
+	const VECTOR mPromoDrawPos[8];
+	const VECTOR mBaseDrawPos1[2];
+	const VECTOR mBaseDrawPos2[2];
+	const VECTOR mSetSize;
 
 	// シンプルな広告
 	int mSimple;
@@ -34,9 +43,10 @@ private:
 	// やまこの広告
 	int mYamako;
 
-
-
 	// 広告の土台
-	int mPromo;
+	int mPromo[7];
+	// 広告のベース
+	int mPromoBase1[2];
+	int mPromoBase2[2];
 };
 
